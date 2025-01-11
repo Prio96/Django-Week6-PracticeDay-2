@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load static %} {% block head_title %}Banking System{% endblock %} 
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}{% block head_title %}Banking System{% endblock %} 
 {% block body %} 
 {% if form.non_field_errors %} 
 {% for error in form.non_field_errors %}
@@ -120,5 +120,6 @@
             </div>
         </form>
     </div>
+    <a href="{% url 'PassChange' %}">Change Your Password</a>
 </div>
 {% endblock %}

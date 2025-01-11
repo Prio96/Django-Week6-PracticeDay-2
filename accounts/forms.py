@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django import forms
 from .models import Account_type,Gender_type, UserAddress, UserBankAccount
 from django.contrib.auth.models import User
@@ -121,4 +121,6 @@ class UserUpdateForm(forms.ModelForm):
             user_address.save()
             
         return user
+    
+
     
