@@ -179,39 +179,36 @@ class MoneyTransferView(LoginRequiredMixin, CreateView):
         return kwargs
     
     def form_valid(self, form):
-        try:
-            # self.object=form.save()
-            user=self.request.user
-            amount=form.cleaned_data.get('amount')
-            recipient=form.cleaned_data.get('account_number')
+        #self.object=form.save()
+        user=self.request.user
+        amount=form.cleaned_data.get('amount')
+        recipient=form.cleaned_data.get('account_number')
             
-            sender_template="transactions/sender_email.html"
-            send_subject="Send Money"
-            sender_message=render_to_string(sender_template,{
-                'user':user,
-                'amount':amount,
-                'recipient':recipient
-            })
-            send_email=EmailMultiAlternatives(send_subject, '', to=[user.email])
-            send_email.attach_alternative(sender_message,"text/html")
-            send_email.send()
+        sender_template="transactions/sender_email.html"
+        send_subject="Send Money"
+        sender_message=render_to_string(sender_template,{
+            'user':user,
+            'amount':amount,
+            'recipient':recipient
+        })
+        send_email=EmailMultiAlternatives(send_subject, '', to=[user.email])
+        send_email.attach_alternative(sender_message,"text/html")
+        send_email.send()
             
-            recipient_template="transactions/recipient_email.html"
-            receive_subject="Receive Money"
-            recipient_message=render_to_string(recipient_template,{
-                'user':user,
-                'amount':amount,
-                'recipient':recipient
-            })
-            receive_email=EmailMultiAlternatives(receive_subject, '',to=[recipient.user.email])
-            receive_email.attach_alternative(recipient_message,"text/html")
-            receive_email.send()
+        recipient_template="transactions/recipient_email.html"
+        receive_subject="Receive Money"
+        recipient_message=render_to_string(recipient_template,{
+            'user':user,
+            'amount':amount,
+            'recipient':recipient
+        })
+        receive_email=EmailMultiAlternatives(receive_subject, '',to=[recipient.user.email])
+        receive_email.attach_alternative(recipient_message,"text/html")
+        receive_email.send()
             
-            messages.success(self.request,f"${form.cleaned_data.get('amount')} has been transferred successfully to {form.cleaned_data.get('account_number')}.")
-            return super().form_valid(form)
-        except ValueError as e:
-            messages.error(self.request, str(e))
-            return self.form_invalid(form)
+        messages.success(self.request,f"${form.cleaned_data.get('amount')} has been transferred successfully to {form.cleaned_data.get('account_number')}.")
+        return super().form_valid(form)
+        
 
         
                 
